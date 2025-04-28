@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+	<class>GameModeWindow</class>
+	<widget class="QWidget" name="GameModeWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>400</width>
+				<height>300</height>
+			</rect>
+		</property>
+		<layout class="QVBoxLayout" name="verticalLayout">
+			<item>
+				<widget class="QLabel" name="modeLabel">
+					<property name="text">
+						<string>Choose Game Mode</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QRadioButton" name="pvpRadioButton">
+					<property name="text">
+						<string>Player vs Player</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QRadioButton" name="pvaiRadioButton">
+					<property name="text">
+						<string>Player vs AI</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QLabel" name="difficultyLabel">
+					<property name="text">
+						<string>AI Difficulty:</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QComboBox" name="difficultyComboBox"/>
+			</item>
+			<item>
+				<widget class="QPushButton" name="startButton">
+					<property name="text">
+						<string>Start Game</string>
+					</property>
+				</widget>
+			</item>
+		</layout>
+	</widget>
+	<resources/>
+	<connections/>
+</ui>
