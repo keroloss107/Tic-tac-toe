@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Game.h"
+#include "../SRC/Game.h"
 
 class GameTest : public ::testing::Test {
 protected:

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Board.h"
+#include "../SRC/Board.h"
 
 // ✅ Test: Constructor initializes all cells to non-player characters
 TEST(BoardTest, BoardStartsEmpty) {

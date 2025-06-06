@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../src/AI.h"
-#include "../src/Board.h"
+#include "../SRC/AI.h"
+#include "../SRC/Board.h"
 
 TEST(AITest, EasyModeReturnsValidMove) {
     Board board;
