@@ -1,0 +1,25 @@
+name: C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: true  # Needed for googletest submodule
+
+    - name: Install CMake
+      run: sudo apt-get update && sudo apt-get install cmake -y
+
+    - name: Create build directory
+      run: cmake -S . -B build
+
+    - name: Build project
+      run: cmake --build build
+
+    - name: Run tests
+      run: ./build/tests || ./build/tests.exe  # one of these will work depending on platform
