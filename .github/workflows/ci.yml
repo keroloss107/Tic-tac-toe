@@ -22,4 +22,4 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: ./build/tests || ./build/tests.exe  # one of these will work depending on platform
+      run: ./build/tests || ./out/build/x64-Debug/tests.exe  # one of these will work depending on platform
