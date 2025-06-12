@@ -18,6 +18,7 @@ public:
     bool isVsAI() const { return vsAI_; }
     AI* getAIPlayer() const { return aiPlayer_; }
     Board& getBoard() { return board_; }
+    void switchPlayer(std::string& currentPlayerName, char& currentPlayerSymbol);
 private:
     Board board_;
     AI* aiPlayer_;
@@ -29,7 +30,6 @@ private:
     AI::Difficulty aiDifficulty_;
 
     void setupGame();
-    void switchPlayer(std::string& currentPlayerName, char& currentPlayerSymbol);
 };
 
 #endif // GAME_H
