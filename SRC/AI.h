@@ -3,49 +3,43 @@
 
 #include "Board.h"
 #include <utility>
-#include <vector>
-using namespace std;
 
 class AI {
 public:
-    enum Difficulty {
-        EASY,
-        MEDIUM,
-        HARD
-    };
+    enum Difficulty { EASY, MEDIUM, HARD };
+
+    AI(char aiMark, char humanMark, Difficulty level);
+
+    // Main interface: call this to get the AI's chosen move based on difficulty
+    std::pair<int, int> findBestMove(Board& board);
 
 private:
-    char aiMark_;           // AI's mark
-    char humanMark_;        // Human player's mark
-    Difficulty difficulty_; // AI difficulty level
+    char aiMark_;
+    char humanMark_;
+    Difficulty difficulty_;
 
-    // Helper function for easy difficulty (random move)
-    pair<int, int> getRandomMove(Board& board);
-
-    // Helper function for medium difficulty (random or optimal move)
-    pair<int, int> getMediumMove(Board& board);
-
-    // Tree-based Minimax helper
+    // === Difficulty-specific helpers ===
+    std::pair<int, int> getRandomMove(Board& board);                // For EASY
+    std::pair<int, int> getMediumMove(Board& board);                // For MEDIUM
+    std::pair<int, int> findBestMoveLimited(Board& board, int maxDepth); // Shallow minimax (used in MEDIUM)
+    std::pair<int, int> runFullMinimax(Board& board);               // Full minimax for HARD
+    // === Internal node representation ===
     struct TreeNode {
         Board boardState;
-        pair<int, int> move;
+        std::pair<int, int> move;
         int score;
         bool isMaximizing;
-        vector<TreeNode*> children;
+        std::vector<TreeNode*> children;
 
-        TreeNode(Board b, pair<int, int> m, bool maximizing)
-            : boardState(b), move(m), score(0), isMaximizing(maximizing) {}
+        TreeNode(Board b, std::pair<int, int> m, bool maximizing)
+            : boardState(b), move(m), score(0), isMaximizing(maximizing) {
+        }
     };
+    // === Minimax tree functions ===
+    int buildTree(TreeNode* node, int depth, int alpha, int beta); // Full-depth minimax (HARD)
+    int buildTreeLimited(TreeNode* node, int depth, int maxDepth, int alpha, int beta); // Depth-limited minimax (MEDIUM)
 
-    int buildTree(TreeNode* node, int depth, int alpha, int beta);
 
-public:
-    AI(char aiMark, char humanMark, Difficulty level);   // Constructor to initialize AI and human marks and difficulty level
-
-    // Function to find the best move for the AI
-    pair<int, int> findBestMove(Board& board);
 };
 
-#endif  // AI_H
-// End of AI.h
-// This file contains the definition of the AI class and its methods.
+#endif // AI_H
