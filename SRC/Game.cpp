@@ -38,7 +38,8 @@ void Game::setupGame() {
     if (gameMode == 1) {
         cout << "Enter Player 2 name: ";
         getline(cin, player2Name_);
-    } else {
+    }
+    else {
         vsAI_ = true;
         player2Name_ = "Computer";
 
@@ -56,7 +57,7 @@ void Game::setupGame() {
         }
 
         aiDifficulty_ = (difficultyChoice == 1) ? AI::EASY :
-                        (difficultyChoice == 2) ? AI::MEDIUM : AI::HARD;
+            (difficultyChoice == 2) ? AI::MEDIUM : AI::HARD;
     }
 
     cout << player1Name_ << ", choose your symbol (X or O): ";
@@ -84,7 +85,8 @@ void Game::switchPlayer(string& currentPlayerName, char& currentPlayerSymbol) {
     if (currentPlayerName == player1Name_) {
         currentPlayerName = player2Name_;
         currentPlayerSymbol = player2Symbol_;
-    } else {
+    }
+    else {
         currentPlayerName = player1Name_;
         currentPlayerSymbol = player1Symbol_;
     }
@@ -106,7 +108,8 @@ void Game::play() {
             cout << "Computer is thinking...\n";
             pair<int, int> bestMove = aiPlayer_->findBestMove(board_);
             board_.makeMove(bestMove.first, bestMove.second, currentPlayerSymbol);
-        } else {
+        }
+        else {
             cout << currentPlayerName << " (" << currentPlayerSymbol << "), enter your move (1-9): ";
             cin >> move;
 

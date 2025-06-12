@@ -58,7 +58,7 @@ int Board::evaluate() {
 void Board::makeMove(int row, int col, char player) {
     if (row >= 0 && row < SIZE && col >= 0 && col < SIZE && grid[row][col] == ' ') {
         grid[row][col] = player; // Place the player's symbol on the board
-    } 
+    }
     else {
         cout << "Invalid move!" << endl; // Invalid move message
     }

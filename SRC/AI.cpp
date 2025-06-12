@@ -177,6 +177,3 @@ int AI::buildTreeLimited(TreeNode* node, int depth, int maxDepth, int alpha, int
 
     return node->score;
 }
-
-
-
