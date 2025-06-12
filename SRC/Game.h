@@ -10,6 +10,14 @@ public:
     Game();
     ~Game();
     void play();
+
+    const std::string& getPlayer1Name() const { return player1Name_; }
+    const std::string& getPlayer2Name() const { return player2Name_; }
+    char getPlayer1Symbol() const { return player1Symbol_; }
+    char getPlayer2Symbol() const { return player2Symbol_; }
+    bool isVsAI() const { return vsAI_; }
+    AI* getAIPlayer() const { return aiPlayer_; }
+    Board& getBoard() { return board_; }
 private:
     Board board_;
     AI* aiPlayer_;
