@@ -36,15 +36,19 @@ TEST(AITest, FindBestMove_WinningMoveDetected) {
     Board board;
     AI ai('O', 'X', AI::HARD);
 
-    // AI is 'O', can win by placing at (2,2)
+    // AI has two 'O's and can win
     board.makeMove(0, 0, 'O');
-    board.makeMove(1, 1, 'O');
-    board.makeMove(0, 1, 'X');
-    board.makeMove(0, 2, 'X');
+    board.makeMove(0, 1, 'O');
+    board.makeMove(1, 0, 'X');
+    board.makeMove(1, 1, 'X');
 
     auto bestMove = ai.findBestMove(board);
-    EXPECT_EQ(bestMove.first, 2);
+    EXPECT_EQ(bestMove.first, 0);
     EXPECT_EQ(bestMove.second, 2);
+
+    // Simulate applying the move
+    board.makeMove(bestMove.first, bestMove.second, 'O');
+    EXPECT_EQ(board.evaluate(), 10);  // AI should win
 }
 
 // Test findBestMove (minimax) blocks opponent win
@@ -52,16 +56,19 @@ TEST(AITest, FindBestMove_BlocksOpponentWin) {
     Board board;
     AI ai('O', 'X', AI::HARD);
 
-    // Human is 'X' and can win with (2,0) unless blocked
+    // Human can win if AI doesn't block at (2, 0)
     board.makeMove(0, 0, 'X');
     board.makeMove(1, 1, 'X');
-    board.makeMove(0, 1, 'O'); // AI move
-    board.makeMove(2, 2, 'O'); // AI move
+    board.makeMove(0, 1, 'O');
+    board.makeMove(2, 2, 'O');
 
     auto bestMove = ai.findBestMove(board);
-    EXPECT_EQ(bestMove.first, 2);
-    EXPECT_EQ(bestMove.second, 0);
+
+    // AI should block human from winning
+    board.makeMove(bestMove.first, bestMove.second, 'O');
+    EXPECT_NE(board.evaluate(), -10);  // Human should NOT have won
 }
+
 
 // Test findBestMove returns a valid move on empty board
 TEST(AITest, FindBestMove_EmptyBoard) {

@@ -143,5 +143,12 @@ void Game::play() {
         }
     }
 }
+
+void Game::setPlayerNamesAndSymbols(const std::string& p1, const std::string& p2, char s1, char s2) {
+    player1Name_ = p1;
+    player2Name_ = p2;
+    player1Symbol_ = s1;
+    player2Symbol_ = s2;
+}
 // End of Game.cpp
 // This file contains the implementation of the Game class and its methods.

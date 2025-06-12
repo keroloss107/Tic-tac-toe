@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "../SRC/Game.h"  // Adjust path if needed
 
+
 // Test Game constructor initializes values correctly
 TEST(GameTest, Constructor_InitializesDefaults) {
     Game game;
@@ -11,27 +12,20 @@ TEST(GameTest, Constructor_InitializesDefaults) {
 // Test switchPlayer changes name and symbol correctly
 TEST(GameTest, SwitchPlayer_AlternatesCorrectly) {
     Game game;
+    game.setPlayerNamesAndSymbols("Alice", "Bob", 'X', 'O');
 
-    // Setup player names and symbols using known values
-    std::string player1 = "Alice";
-    std::string player2 = "Bob";
-    char symbol1 = 'X';
-    char symbol2 = 'O';
+    std::string currentName = "Alice";
+    char currentSymbol = 'X';
 
-    // Simulate setup
-    std::string currentPlayerName = player1;
-    char currentPlayerSymbol = symbol1;
+    game.switchPlayer(currentName, currentSymbol);
+    EXPECT_EQ(currentName, "Bob");
+    EXPECT_EQ(currentSymbol, 'O');
 
-    // Temporarily set Game state using public getters + reference variables
-    // (Since there's no setter, we just simulate switching behavior)
-    game.switchPlayer(currentPlayerName, currentPlayerSymbol);
-    EXPECT_EQ(currentPlayerName, player2);  // Should now be player 2
-    EXPECT_EQ(currentPlayerSymbol, symbol2);
-
-    game.switchPlayer(currentPlayerName, currentPlayerSymbol);
-    EXPECT_EQ(currentPlayerName, player1);  // Switch back
-    EXPECT_EQ(currentPlayerSymbol, symbol1);
+    game.switchPlayer(currentName, currentSymbol);
+    EXPECT_EQ(currentName, "Alice");
+    EXPECT_EQ(currentSymbol, 'X');
 }
+
 
 // Test basic interaction with the game’s board via public getter
 TEST(GameTest, GameBoard_ApplyMoveReflectsCorrectly) {
@@ -56,3 +50,4 @@ TEST(GameTest, Destructor_CleansUpAIIfCreated) {
 
     delete game;  // Destructor should handle deletion safely even if nullptr
 }
+
