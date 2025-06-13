@@ -1,0 +1,113 @@
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+// Class to represent player stats
+class Player {
+private:
+    string name;
+    int wins;
+    int losses;
+    int draws;
+
+public:
+    Player(string playerName = "") : name(playerName), wins(0), losses(0), draws(0) {}
+
+    void recordWin() { wins++; }
+    void recordLoss() { losses++; }
+    void recordDraw() { draws++; }
+
+    string getName() const { return name; }
+    int getWins() const { return wins; }
+    int getLosses() const { return losses; }
+    int getDraws() const { return draws; }
+
+    void setStats(int w, int l, int d) {
+        wins = w;
+        losses = l;
+        draws = d;
+    }
+
+    void showStats() const {
+        cout << "Player: " << name << " | Wins: " << wins
+             << ", Losses: " << losses << ", Draws: " << draws << endl;
+    }
+};
+
+// Class to manage multiple players
+class PlayerManager {
+private:
+    map<string, Player> players;
+
+public:
+    void loadPlayers(const string& filename) {
+        ifstream file(filename);
+        if (!file.is_open()) return;
+
+        string name;
+        int w, l, d;
+        while (file >> name >> w >> l >> d) {
+            Player player(name);
+            player.setStats(w, l, d);
+            players[name] = player;
+        }
+        file.close();
+    }
+
+    void savePlayers(const string& filename) {
+        ofstream file(filename);
+        for (const auto& [name, player] : players) {
+            file << name << " " << player.getWins() << " "
+                 << player.getLosses() << " " << player.getDraws() << endl;
+        }
+        file.close();
+    }
+
+    Player& getOrCreatePlayer(const string& name) {
+        if (players.find(name) == players.end()) {
+            players[name] = Player(name);
+        }
+        return players[name];
+    }
+};
+
+int main() {
+    PlayerManager manager;
+    const string filename = "players.txt";
+    manager.loadPlayers(filename);
+
+    int numPlayers;
+    cout << "How many players are logging in? ";
+    cin >> numPlayers;
+
+    vector<Player*> currentPlayers;
+
+    // Log in players
+    for (int i = 0; i < numPlayers; i++) {
+        string playerName;
+        cout << "Enter name for Player " << i + 1 << ": ";
+        cin >> playerName;
+        Player& player = manager.getOrCreatePlayer(playerName);
+        player.showStats();
+        currentPlayers.push_back(&player);
+    }
+
+    // Simulate a game for each player
+    for (Player* player : currentPlayers) {
+        char result;
+        cout << "Enter result for " << player->getName() << " (w = win, l = loss, d = draw): ";
+        cin >> result;
+
+        if (result == 'w') player->recordWin();
+        else if (result == 'l') player->recordLoss();
+        else if (result == 'd') player->recordDraw();
+    }
+
+    manager.savePlayers(filename);
+    cout << "All progress saved!" << endl;
+
+    return 0;
+}
