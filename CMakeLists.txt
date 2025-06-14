@@ -35,11 +35,11 @@ target_link_libraries(tictactoe tictactoe_lib)
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
 
-# === Unit Tests ===
 set(TEST_SOURCES
     tests/test_board.cpp
     tests/test_ai.cpp
     tests/test_game.cpp
+    tests/test_integration.cpp
 )
 
 add_executable(board_tests ${TEST_SOURCES})
