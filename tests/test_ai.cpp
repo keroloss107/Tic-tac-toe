@@ -89,3 +89,22 @@ TEST(AITest, HardMode_ChoosesValidMoveOnEmptyBoard) {
     auto move = ai.findBestMove(board);  // First move
     EXPECT_TRUE(board.isCellEmpty(move.first, move.second));
 }
+
+TEST(AITest, HardMode_NoCrashOnFullBoard) {
+    Board board;
+
+    // Fill the board with a draw scenario (no winner, no empty spots)
+    board.makeMove(0, 0, 'X'); board.makeMove(0, 1, 'O'); board.makeMove(0, 2, 'X');
+    board.makeMove(1, 0, 'X'); board.makeMove(1, 1, 'O'); board.makeMove(1, 2, 'O');
+    board.makeMove(2, 0, 'O'); board.makeMove(2, 1, 'X'); board.makeMove(2, 2, 'X');
+
+    AI ai('O', 'X', AI::HARD);
+    auto move = ai.findBestMove(board);
+
+    EXPECT_EQ(move.first, -1);
+    EXPECT_EQ(move.second, -1);
+}
+
+
+
+

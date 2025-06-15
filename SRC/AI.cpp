@@ -14,6 +14,10 @@ AI::AI(char aiMark, char humanMark, Difficulty level)
 
 // Main interface
 pair<int, int> AI::findBestMove(Board& board) {
+    auto availableMoves = board.getAvailableMoves();
+    if (availableMoves.empty()) {
+        return { -1, -1 };  // No possible moves
+    }
     if (difficulty_ == EASY) {
         return getRandomMove(board);
     }
@@ -52,6 +56,12 @@ pair<int, int> AI::getMediumMove(Board& board) {
 
 // Shallow minimax with depth limit
 pair<int, int> AI::findBestMoveLimited(Board& board, int maxDepth) {
+
+    auto availableMoves = board.getAvailableMoves();
+    if (availableMoves.empty()) {
+        return { -1, -1 };
+    }
+
     TreeNode* root = new TreeNode(board, { -1, -1 }, true);
     buildTreeLimited(root, 0, maxDepth, numeric_limits<int>::min(), numeric_limits<int>::max());
 
