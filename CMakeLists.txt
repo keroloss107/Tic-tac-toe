@@ -16,9 +16,9 @@ include_directories(include)
 
 # === Game Source Files ===
 set(GAME_SOURCES
-    SRC/Board.cpp
-    SRC/AI.cpp
-    SRC/Game.cpp
+    Game_Logic/Board.cpp
+    Game_Logic/AI.cpp
+    Game_Logic/Game.cpp
 )
 
 set(GAME_HEADERS
