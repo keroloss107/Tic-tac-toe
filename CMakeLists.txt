@@ -31,7 +31,7 @@ set(GAME_HEADERS
 add_library(tictactoe_lib ${GAME_SOURCES} ${GAME_HEADERS})
 
 # === Main Game Executable ===
-add_executable(tictactoe SRC/main.cpp)
+add_executable(tictactoe Game_Logic/main.cpp)
 target_link_libraries(tictactoe tictactoe_lib)
 
 # === GoogleTest (submodule) ===
