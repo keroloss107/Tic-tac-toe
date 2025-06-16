@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../SRC/AI.h"
-#include "../SRC/Board.h"
+#include "../include/AI.h"
+#include "../include/Board.h"
 
 // ======================================
 // EASY MODE TESTS

@@ -1,7 +1,7 @@
 // ===== tests/test_integration.cpp =====
-#include "../SRC/Board.h"
-#include "../SRC/AI.h"
-#include "../SRC/Game.h"
+#include "../include/Board.h"
+#include "../include/AI.h"
+#include "../include/Game.h"
 #include <gtest/gtest.h>
 #include <iostream>
 

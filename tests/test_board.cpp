@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../SRC/Board.h"  // Adjust the include path based on your project structure
+#include "../include/Board.h"  // Adjust the include path based on your project structure
 
 // Test Board Constructor and initial state
 TEST(BoardTest, Constructor_InitializesEmptyBoard) {

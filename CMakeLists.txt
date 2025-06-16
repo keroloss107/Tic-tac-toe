@@ -11,6 +11,9 @@ if(MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
+# === Include Directories ===
+include_directories(include)
+
 # === Game Source Files ===
 set(GAME_SOURCES
     SRC/Board.cpp
@@ -19,9 +22,9 @@ set(GAME_SOURCES
 )
 
 set(GAME_HEADERS
-    SRC/Board.h
-    SRC/AI.h
-    SRC/Game.h
+    include/Board.h
+    include/AI.h
+    include/Game.h
 )
 
 # === Build shared game logic as a library ===
@@ -34,6 +37,8 @@ target_link_libraries(tictactoe tictactoe_lib)
 # === GoogleTest (submodule) ===
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
+
+# === Test Sources ===
 
 set(TEST_SOURCES
     tests/test_board.cpp

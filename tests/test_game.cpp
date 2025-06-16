@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../SRC/Game.h"  // Adjust path if needed
+#include "../include/Game.h"  // Adjust path if needed
 
 
 // Test Game constructor initializes values correctly
