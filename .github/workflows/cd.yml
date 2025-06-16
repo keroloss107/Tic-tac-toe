@@ -1,33 +1,24 @@
-name: CD - Build and Release
+name: CD - Release Build
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - '**.cpp'
-      - '**.h'
-      - 'CMakeLists.txt'
-      - '.github/workflows/cd.yml'
+    branches: [main]
 
 jobs:
-  build-and-release:
+  release:
     runs-on: windows-latest
 
     env:
       TAG_NAME: v1.0.${{ github.run_number }}
 
     steps:
-    - name: Checkout repository (with submodules)
+    - name: Checkout repository with submodules
       uses: actions/checkout@v3
       with:
         submodules: true
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-
-    - name: Set up CMake
-      uses: lukka/get-cmake@latest
-
-    - name: Configure CMake (Release mode)
+    - name: Configure CMake
       run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build project
@@ -45,7 +36,7 @@ jobs:
         echo Advanced Tic Tac Toe Project > release\README.txt
         echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
 
-    - name: Zip release contents
+    - name: Create zip
       run: Compress-Archive -Path release\* -DestinationPath tictactoe-release.zip
 
     - name: Create Git tag
