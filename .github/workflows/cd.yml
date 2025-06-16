@@ -1,10 +1,9 @@
-name: CD - Build, Package, and Release
+name: CD - Release Tic Tac Toe
 
 on:
   push:
-    tags:
-      - 'v*'      # Triggers only when pushing a tag like v1.0.0
-  workflow_dispatch:
+    branches:
+      - main  # or your default branch
 
 jobs:
   release:
@@ -14,15 +13,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: false
 
-    - name: Configure project with CMake
-      run: cmake -S . -B build
+    - name: Set TAG_NAME using GitHub run number
+      run: echo "TAG_NAME=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
 
-    - name: Build the game
-      run: cmake --build build --config Release
-
-    - name: Prepare release folder
+    - name: Build Release Folder
       run: |
         mkdir release
         copy build\Release\tictactoe.exe release\tictactoe.exe
@@ -34,14 +30,21 @@ jobs:
         echo Advanced Tic Tac Toe Project > release\README.txt
         echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
 
-    - name: Create ZIP Archive
-      run: powershell Compress-Archive -Path release -DestinationPath tictactoe-release.zip
+    - name: Zip release content
+      run: Compress-Archive -Path release\* -DestinationPath tic-tac-toe-release.zip
 
-    - name: Create GitHub Release
+    - name: Create Git Tag
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git tag $env:TAG_NAME
+        git push origin $env:TAG_NAME
+
+    - name: Publish GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        name: Release ${{ github.ref_name }}
-        tag_name: ${{ github.ref_name }}
-        files: tictactoe-release.zip
+        name: ${{ env.TAG_NAME }}
+        tag_name: ${{ env.TAG_NAME }}
+        files: tic-tac-toe-release.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
