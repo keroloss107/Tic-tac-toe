@@ -1,34 +1,41 @@
-name: CD - Release Tic Tac Toe
+name: CD - Build and Release
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - 'CMakeLists.txt'
+      - '.github/workflows/cd.yml'
 
 jobs:
-  release:
+  build-and-release:
     runs-on: windows-latest
+
+    env:
+      TAG_NAME: v1.0.${{ github.run_number }}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        submodules: false
 
-    - name: Set tag using GitHub run number
-      run: echo "TAG_NAME=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
+    - name: Set up CMake
+      uses: lukka/get-cmake@latest
 
-    - name: Create release folder and copy executable
-      shell: powershell
+    - name: Configure CMake (Release mode)
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build project
+      run: cmake --build build --config Release
+
+    - name: Prepare release directory
       run: |
         mkdir release
-        $exePath = "out\build\x64-Debug\tictactoe.exe"
-        if (Test-Path $exePath) {
-          copy $exePath release\tictactoe.exe
-        } else {
-          Write-Error "❌ tictactoe.exe not found at $exePath"
-          exit 1
-        }
-
-    - name: Copy project files to release
-      run: |
+        copy build\Release\tictactoe.exe release\tictactoe.exe
         xcopy include release\include /E /I /Y
         xcopy Game_Logic release\Game_Logic /E /I /Y
         xcopy GUI release\GUI /E /I /Y
@@ -37,21 +44,21 @@ jobs:
         echo Advanced Tic Tac Toe Project > release\README.txt
         echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
 
-    - name: Create zip
-      run: powershell Compress-Archive -Path release\* -DestinationPath tic-tac-toe-release.zip
+    - name: Zip release contents
+      run: Compress-Archive -Path release\* -DestinationPath tictactoe-release.zip
 
-    - name: Tag and push
+    - name: Create Git tag
       run: |
         git config user.name "github-actions"
         git config user.email "actions@github.com"
         git tag $env:TAG_NAME
         git push origin $env:TAG_NAME
 
-    - name: Publish release
+    - name: Publish GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        name: ${{ env.TAG_NAME }}
+        name: Release ${{ env.TAG_NAME }}
         tag_name: ${{ env.TAG_NAME }}
-        files: tic-tac-toe-release.zip
+        files: tictactoe-release.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
