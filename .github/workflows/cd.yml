@@ -18,10 +18,11 @@ jobs:
       TAG_NAME: v1.0.${{ github.run_number }}
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repository (with submodules)
       uses: actions/checkout@v3
       with:
-        submodules: false
+        submodules: true
+
 
     - name: Set up CMake
       uses: lukka/get-cmake@latest
