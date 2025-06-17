@@ -42,16 +42,10 @@ pair<int, int> AI::getRandomMove(Board& board) {
 }
 
 // ===================================
-// MEDIUM: 30% Random, 70% Shallow Minimax
+// MEDIUM: shallow Minimax with Depth Limit 2
 // ===================================
 pair<int, int> AI::getMediumMove(Board& board) {
-    int chance = rand() % 10;
-    if (chance < 3) {
-        return getRandomMove(board); // 30% chance
-    }
-    else {
-        return findBestMoveLimited(board, 2); // 70% smart
-    }
+        return findBestMoveLimited(board, 2);
 }
 
 // Shallow minimax with depth limit
