@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Game_gui.h"
 #include <iostream>
 #include <utility>
 using namespace std;
