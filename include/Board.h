@@ -13,7 +13,7 @@ private:
     char grid[SIZE][SIZE]; // 2D array for the board
 public:
     Board(); // Constructor to initialize the board
-    bool isMovesLeft(); // Function to check if there are any moves left
+    bool isMovesLeft() const; // Function to check if there are any moves left
     int  evaluate(); // Function to evaluate the board
     void makeMove(int row, int col, char player); // Function to make a move
     void undoMove(int row, int col); // Function to undo a move(for backtracking in minimax)
