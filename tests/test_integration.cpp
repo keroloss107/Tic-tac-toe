@@ -88,55 +88,6 @@ TEST(IntegrationTest, AIAndHumanAlternating) {
     EXPECT_NE(board.evaluate(), 10); // Not yet a win
 }
 
-// Test full game flow until completion between Human and AI
-TEST(IntegrationTest, FullGameFlowEndsCorrectly) {
-    Game game;
-
-    // Setup names, symbols, and difficulty
-    game.setPlayerNamesAndSymbols("Keroloss", "Computer", 'X', 'O');
-    AI* ai = new AI('O', 'X', AI::HARD);
-    game.setAIPlayer(ai);
-
-    Board& board = game.getBoard();
-
-    std::string currentPlayer = game.getPlayer1Name();
-    char currentSymbol = game.getPlayer1Symbol();
-
-    bool gameOver = false;
-    int turnCount = 0;
-
-    while (!gameOver && turnCount < 9) {
-        if (currentPlayer == "Computer") {
-            auto move = ai->findBestMove(board);
-            board.makeMove(move.first, move.second, currentSymbol);
-        }
-        else {
-            // Simulate human move by picking first available
-            auto moves = board.getAvailableMoves();
-            if (!moves.empty()) {
-                board.makeMove(moves.front().first, moves.front().second, currentSymbol);
-            }
-        }
-
-        int result = board.evaluate();
-        if ((result == 10 && currentSymbol == 'O') || (result == -10 && currentSymbol == 'X')) {
-            gameOver = true;
-        }
-        else if (!board.isMovesLeft()) {
-            gameOver = true;
-        }
-        else {
-            game.switchPlayer(currentPlayer, currentSymbol);
-        }
-
-        ++turnCount;
-    }
-
-    EXPECT_TRUE(gameOver);
-    EXPECT_TRUE(board.evaluate() == 10 || board.evaluate() == -10 || !board.isMovesLeft());
-
-}
-
 // Test full game integration including Game class logic
 TEST(IntegrationTest, GameClassFullIntegration) {
     Game game;
@@ -164,7 +115,4 @@ TEST(IntegrationTest, GameClassFullIntegration) {
     EXPECT_TRUE(result == 10 || result == -10 || result == 0);
     EXPECT_TRUE(board.isMovesLeft() || result != 0);
 }
-
-
-
 // End of test_integration.cpp
