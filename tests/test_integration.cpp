@@ -115,4 +115,41 @@ TEST(IntegrationTest, GameClassFullIntegration) {
     EXPECT_TRUE(result == 10 || result == -10 || result == 0);
     EXPECT_TRUE(board.isMovesLeft() || result != 0);
 }
+
+TEST(IntegrationTest, AIVsAIPlaysFullGame) {
+    Board board;
+    AI ai1('X', 'O', AI::HARD);
+    AI ai2('O', 'X', AI::HARD);
+
+    char currentPlayer = 'X';
+    int moveCount = 0;
+
+    while (board.isMovesLeft() && board.evaluate() == 0 && moveCount < 9) {
+        auto move = (currentPlayer == 'X') ? ai1.findBestMove(board)
+            : ai2.findBestMove(board);
+        board.makeMove(move.first, move.second, currentPlayer);
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        ++moveCount;
+    }
+
+    int result = board.evaluate();
+    EXPECT_TRUE(result == 10 || result == -10 || result == 0);
+}
+
+TEST(IntegrationTest, AIHandlesFullBoard) {
+    Board board;
+    char symbols[2] = { 'X', 'O' };
+    int k = 0;
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            board.makeMove(i, j, symbols[(k++) % 2]);
+
+    AI ai('O', 'X', AI::HARD);
+    auto move = ai.findBestMove(board);
+    EXPECT_EQ(move, std::make_pair(-1, -1));
+}
+
+
+
 // End of test_integration.cpp
