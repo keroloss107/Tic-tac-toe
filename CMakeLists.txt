@@ -5,11 +5,16 @@ project(TicTacToeProject)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# MSVC Debug postfix (useful for windeployqt)
+# MSVC Debug postfix (for windeployqt)
 if(MSVC)
     set(CMAKE_DEBUG_POSTFIX "_d")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
+
+# === Enable Qt UI auto processing ===
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 # === Include Paths ===
 include_directories(include GUI)
@@ -31,6 +36,17 @@ add_library(tictactoe_lib ${GAME_SOURCES} ${GAME_HEADERS})
 
 # === GUI Files (Only on Windows) ===
 if(WIN32)
+    # UI Files
+    set(GUI_UI
+        GUI/GameModeWindow.ui
+        GUI/LoginWindow.ui
+        GUI/RegisterWindow.ui
+        GUI/MainMenuWindow.ui
+        GUI/GameHistoryWindow.ui
+        GUI/TicTacToe.ui
+    )
+
+    # GUI Source Files
     set(GUI_SOURCES
         GUI/main_gui.cpp
         GUI/TicTacToe.cpp
@@ -40,12 +56,13 @@ if(WIN32)
         GUI/GameModeWindow.cpp
         GUI/GameHistoryWindow.cpp
         GUI/DatabaseManager.cpp
+        ${GUI_UI}  # Include UI files for AUTOUIC
     )
 
-    # Find Qt 6 (Core, GUI, Widgets)
-    find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets sql)
+    # Find Qt with SQL
+    find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql)
 
-    # Main GUI executable
+    # GUI Executable
     add_executable(tictactoe ${GUI_SOURCES})
     target_link_libraries(tictactoe
         tictactoe_lib
@@ -75,7 +92,7 @@ target_link_libraries(board_tests
     gtest_main
 )
 
-# === Enable Test Discovery ===
+# === Google Test Discovery ===
 include(GoogleTest)
 enable_testing()
 gtest_discover_tests(board_tests)
