@@ -1,69 +1,155 @@
-name: Windows CI + Auto CD
+name: CD - Build, Package, and Release
+
+
 
 on:
+
   push:
-    branches: [main]
-  pull_request:
+
+    branches:
+
+      - main
+
+      - release
+
+
 
 jobs:
-  build-and-release:
+
+  release:
+
     runs-on: windows-latest
 
+
+
     steps:
-    - name: Checkout code
+
+    - name: Checkout repository
+
       uses: actions/checkout@v3
+
       with:
+
         submodules: true
 
-    - name: Install Qt using aqt
+        fetch-depth: 0  # Required to access previous tags
+
+
+
+    - name: Set up Git
+
       run: |
-        python -m pip install aqtinstall
-        python -m aqt install-qt windows desktop 6.9.1 win64_msvc2022_64 -O ${{ github.workspace }}/Qt
 
-    - name: Configure with CMake
-      run: >
-        cmake -S . -B build -G "Visual Studio 17 2022" -A x64
-        -DCMAKE_PREFIX_PATH="${{ github.workspace }}/Qt/6.9.1/msvc2022_64"
+        git config user.name "GitHub-actions"
 
-    - name: Build Debug and Run Tests
+        git config user.email "GitHub-actions@github.com"
+
+
+
+    - name: Get latest version and bump
+
+      id: version
+
+      shell: bash
+
       run: |
-        cmake --build build --config Debug
-        build\Debug\board_tests.exe
 
-    - name: Build Release
+        latest_tag=$(git tag --list "v*" --sort=-v:refname | head -n 1)
+
+        echo "Latest tag: $latest_tag"
+
+
+
+        if [[ "$latest_tag" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+
+          major="${BASH_REMATCH[1]}"
+
+          minor="${BASH_REMATCH[2]}"
+
+          patch="${BASH_REMATCH[3]}"
+
+          new_patch=$((patch + 1))
+
+          new_version="v${major}.${minor}.${new_patch}"
+
+        else
+
+          new_version="v1.0.0"
+
+        fi
+
+
+
+        echo "New version: $new_version"
+
+        echo "tag=$new_version" >> $GITHUB_OUTPUT
+
+
+
+    - name: Create Git Tag
+
+      run: |
+
+        git tag ${{ steps.version.outputs.tag }}
+
+        git push origin ${{ steps.version.outputs.tag }}
+
+
+
+    - name: Configure project with CMake
+
+      run: cmake -S . -B build
+
+
+
+    - name: Build the game
+
       run: cmake --build build --config Release
 
-    - name: Deploy Qt DLLs
-      run: |
-        $env:Path += ";${{ github.workspace }}/Qt/6.9.1/msvc2022_64/bin"
-        & "${{ github.workspace }}/Qt/6.9.1/msvc2022_64/bin/windeployqt.exe" --dir build\Release build\Release\tictactoe.exe
 
-    - name: Generate automatic version (v1.0.X)
-      id: generate_version
-      run: |
-        echo "Fetching latest release version..."
-        $releases = gh release list --limit 100 | Select-String "v1.0."
-        if ($releases.Count -eq 0) {
-          $version = "v1.0.1"
-        } else {
-          $last = ($releases | ForEach-Object { ($_ -split '\s+')[0] })[-1]
-          $next = [int]($last -replace 'v1\.0\.','') + 1
-          $version = "v1.0.$next"
-        }
-        echo "version=$version" >> $env:GITHUB_OUTPUT
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: pwsh
 
-    - name: Zip the release files
-      run: |
-        Compress-Archive -Path build\Release\* -DestinationPath tictactoe-release.zip
+    - name: Prepare release folder
 
-    - name: Publish GitHub Release
+      run: |
+
+        mkdir release
+
+        copy build\Release\tictactoe.exe release\tictactoe.exe
+
+        xcopy include release\include /E /I /Y
+
+        xcopy Game_Logic release\Game_Logic /E /I /Y
+
+        xcopy GUI release\GUI /E /I /Y
+
+        xcopy tests release\tests /E /I /Y
+
+        copy CMakeLists.txt release\CMakeLists.txt
+
+        echo Advanced Tic Tac Toe Project > release\README.txt
+
+        echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
+
+
+
+    - name: Create ZIP Archive
+
+      run: powershell Compress-Archive -Path release -DestinationPath tictactoe-release.zip
+
+
+
+    - name: Create GitHub Release
+
       uses: softprops/action-gh-release@v1
+
       with:
-        name: Automatic Release ${{ steps.generate_version.outputs.version }}
-        tag_name: ${{ steps.generate_version.outputs.version }}
+
+        name: Release ${{ steps.version.outputs.tag }}
+
+        tag_name: ${{ steps.version.outputs.tag }}
+
         files: tictactoe-release.zip
+
       env:
+
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
