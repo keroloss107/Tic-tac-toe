@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_GUI_H
+#define GAME_GUI_H
 
 #include "Board.h"
 #include "AI.h"
@@ -35,5 +35,5 @@ private:
     AI::Difficulty aiDifficulty_;
 };
 
-#endif // GAME_H
+#endif // GAME_GUI_H
 
