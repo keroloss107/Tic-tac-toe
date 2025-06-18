@@ -12,7 +12,7 @@ if(MSVC)
 endif()
 
 # === Qt Setup ===
-set(CMAKE_PREFIX_PATH "C:/Qt/6.9.1/msvc2022_64")  # Adjust if different
+set(CMAKE_PREFIX_PATH "C:/Qt/6.9.1/msvc2022_64/lib/cmake")  # Adjust if different
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # === UI Compilation ===
