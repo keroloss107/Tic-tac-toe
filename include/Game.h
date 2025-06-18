@@ -19,8 +19,7 @@ public:
     AI* getAIPlayer() const { return aiPlayer_; }
     Board& getBoard() { return board_; }
     void switchPlayer(std::string& currentPlayerName, char& currentPlayerSymbol);
-    void setPlayerNamesAndSymbols(const std::string& p1, const std::string& p2, char s1, char s2);
-    void setAIPlayer(AI* ai) { aiPlayer_ = ai; }
+    
 
 private:
     Board board_;
