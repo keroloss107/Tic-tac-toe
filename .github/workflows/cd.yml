@@ -2,9 +2,11 @@ name: CD - Build, Package, and Release
 
 on:
   push:
+    branches:
+      - main
+      - release
     tags:
       - 'v*'
-  workflow_dispatch:
 
 jobs:
   release:
@@ -33,8 +35,6 @@ jobs:
         copy CMakeLists.txt release\CMakeLists.txt
         echo Advanced Tic Tac Toe Project > release\README.txt
         echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
-
-        
 
     - name: Create ZIP Archive
       run: powershell Compress-Archive -Path release -DestinationPath tictactoe-release.zip
