@@ -21,19 +21,22 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install aqtinstall (Qt installer)
+    - name: Install aqtinstall (Qt downloader)
       run: pip install aqtinstall
 
     - name: Install Qt 6.9.1 (msvc2022_64)
       run: python -m aqt install-qt windows desktop 6.9.1 win64_msvc2022_64 --outputdir ${{ github.workspace }}/Qt
 
-    - name: Configure with CMake
-      run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ github.workspace }}/Qt/6.9.1/msvc2022_64"
+    - name: Configure with CMake (Set Qt6_DIR explicitly)
+      run: >
+        cmake -S . -B build
+        -DCMAKE_BUILD_TYPE=Release
+        -DQt6_DIR="${{ github.workspace }}/Qt/6.9.1/msvc2022_64/lib/cmake/Qt6"
 
     - name: Build project
       run: cmake --build build --config Release
 
-    - name: Deploy Qt DLLs with windeployqt
+    - name: Run windeployqt to bundle DLLs
       run: |
         $qtPath = "${{ github.workspace }}\Qt\6.9.1\msvc2022_64\bin"
         & "$qtPath\windeployqt.exe" --dir build\Release build\Release\tictactoe.exe
@@ -45,7 +48,7 @@ jobs:
         xcopy build\Release\*.dll release\ /Y
         echo Advanced Tic Tac Toe Project with Qt GUI > release\README.txt
 
-    - name: Auto-generate version number from commit hash
+    - name: Auto-generate version number
       id: version
       run: |
         $sha = "${{ github.sha }}"
