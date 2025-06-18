@@ -43,7 +43,7 @@ if(WIN32)
     )
 
     # Find Qt 6 (Core, GUI, Widgets)
-    find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+    find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets sql)
 
     # Main GUI executable
     add_executable(tictactoe ${GUI_SOURCES})
@@ -52,6 +52,7 @@ if(WIN32)
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
+        Qt6::Sql
     )
 endif()
 
