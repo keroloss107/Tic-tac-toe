@@ -1,6 +1,7 @@
 #include "MainMenuWindow.h"
 #include "ui_MainMenuWindow.h"
 #include "GameModeWindow.h"
+#include "GameHistoryWindow.h"
 
 MainMenuWindow::MainMenuWindow(QString username, QWidget* parent) :
     QWidget(parent),
@@ -28,9 +29,14 @@ void MainMenuWindow::on_startGameButton_clicked()
 void MainMenuWindow::on_logoutButton_clicked()
 {
     emit logoutRequested(); // Signal that the user wants to logout
+	this->close(); // Close the main menu window
 }
 
 void MainMenuWindow::on_historyButton_clicked()
 {
-    // (optional, you can implement later)
+
+	extern QString username; // Assuming username is defined globally or passed correctly
+    GameHistoryWindow* historyWindow = new GameHistoryWindow;
+    historyWindow->loadHistory(username);  // Replace with actual username
+    historyWindow->show();
 }

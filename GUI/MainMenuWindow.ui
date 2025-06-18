@@ -1,58 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainMenuWindow</class>
- <widget class="QWidget" name="MainMenuWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>400</width>
-    <height>300</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Main Menu</string>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="titleLabel">
-     <property name="text">
-      <string>Welcome!</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="startGameButton">
-     <property name="text">
-      <string>Start New Game</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="historyButton">
-     <property name="text">
-      <string>View History</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="logoutButton">
-     <property name="text">
-      <string>Logout</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
- </widget>
- <resources/>
- <connections/>
+	<class>MainMenuWindow</class>
+	<widget class="QWidget" name="MainMenuWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>400</width>
+				<height>320</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Main Menu</string>
+		</property>
+		<property name="styleSheet">
+			<string notr="true">
+				QWidget {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #14213d, stop:1 #000000);
+				color: white;
+				font-family: 'Segoe UI';
+				}
+				QLabel {
+				color: #00d4ff;
+				font-size: 20px;
+				font-weight: bold;
+				}
+				QPushButton {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #ff4d6d, stop:1 #f72585);
+				color: white;
+				border-radius: 10px;
+				padding: 10px;
+				font-weight: bold;
+				font-size: 16px;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				margin: 6px 0;
+				}
+				QPushButton:hover {
+				background-color: #ff758f;
+				}
+			</string>
+		</property>
+		<layout class="QVBoxLayout" name="verticalLayout">
+			<item>
+				<widget class="QLabel" name="titleLabel">
+					<property name="text">
+						<string>🎮 Welcome!</string>
+					</property>
+					<property name="alignment">
+						<set>Qt::AlignCenter</set>
+					</property>
+					<property name="font">
+						<font>
+							<pointsize>20</pointsize>
+							<bold>true</bold>
+						</font>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QPushButton" name="startGameButton">
+					<property name="text">
+						<string>🚀 Start New Game</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QPushButton" name="historyButton">
+					<property name="text">
+						<string>📜 View History</string>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QPushButton" name="logoutButton">
+					<property name="text">
+						<string>🔒 Logout</string>
+					</property>
+				</widget>
+			</item>
+		</layout>
+	</widget>
+	<resources/>
+	<connections/>
 </ui>
