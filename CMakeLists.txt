@@ -1,25 +1,20 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.10)
 project(TicTacToeProject)
 
-# C++ Standard
+# Use C++17 standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# MSVC Debug postfix (for windeployqt)
+# MSVC fix: prevent static/dynamic CRT mismatch in debug builds
 if(MSVC)
     set(CMAKE_DEBUG_POSTFIX "_d")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-# === Enable Qt UI auto processing ===
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+# === Include Directories ===
+include_directories(include)
 
-# === Include Paths ===
-include_directories(include GUI)
-
-# === Game Logic ===
+# === Game Source Files ===
 set(GAME_SOURCES
     Game_Logic/Board.cpp
     Game_Logic/AI.cpp
@@ -32,52 +27,19 @@ set(GAME_HEADERS
     include/Game.h
 )
 
+# === Build shared game logic as a library ===
 add_library(tictactoe_lib ${GAME_SOURCES} ${GAME_HEADERS})
 
-# === GUI Files (Only on Windows) ===
-if(WIN32)
-    # UI Files
-    set(GUI_UI
-        GUI/GameModeWindow.ui
-        GUI/LoginWindow.ui
-        GUI/RegisterWindow.ui
-        GUI/MainMenuWindow.ui
-        GUI/GameHistoryWindow.ui
-        GUI/TicTacToe.ui
-    )
+# === Main Game Executable ===
+add_executable(tictactoe Game_Logic/main.cpp)
+target_link_libraries(tictactoe tictactoe_lib)
 
-    # GUI Source Files
-    set(GUI_SOURCES
-        GUI/main_gui.cpp
-        GUI/TicTacToe.cpp
-        GUI/MainMenuWindow.cpp
-        GUI/LoginWindow.cpp
-        GUI/RegisterWindow.cpp
-        GUI/GameModeWindow.cpp
-        GUI/GameHistoryWindow.cpp
-        GUI/DatabaseManager.cpp
-        ${GUI_UI}  # Include UI files for AUTOUIC
-    )
-
-    # Find Qt with SQL
-    find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql)
-
-    # GUI Executable
-    add_executable(tictactoe ${GUI_SOURCES})
-    target_link_libraries(tictactoe
-        tictactoe_lib
-        Qt6::Core
-        Qt6::Gui
-        Qt6::Widgets
-        Qt6::Sql
-    )
-endif()
-
-# === Google Test (submodule) ===
+# === GoogleTest (submodule) ===
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
 
-# === Unit & Integration Tests ===
+# === Test Sources ===
+
 set(TEST_SOURCES
     tests/test_board.cpp
     tests/test_ai.cpp
@@ -92,7 +54,7 @@ target_link_libraries(board_tests
     gtest_main
 )
 
-# === Google Test Discovery ===
+# === Google Test Integration ===
 include(GoogleTest)
 enable_testing()
 gtest_discover_tests(board_tests)
