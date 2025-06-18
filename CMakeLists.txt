@@ -11,10 +11,24 @@ if(MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
+# === Qt Setup ===
+set(CMAKE_PREFIX_PATH "C:/Qt/6.9.1/msvc2022_64")  # Adjust if different
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+
+# === UI Compilation ===
+qt6_wrap_ui(UI_HEADERS
+    GUI/LoginWindow.ui
+    GUI/MainMenuWindow.ui
+    GUI/GameModeWindow.ui
+    GUI/RegisterWindow.ui
+    GUI/GameHistoryWindow.ui
+    GUI/TicTacToe.ui
+)
+
 # === Include Directories ===
 include_directories(include)
 
-# === Game Source Files ===
+# === Game Logic Files ===
 set(GAME_SOURCES
     Game_Logic/Board.cpp
     Game_Logic/AI.cpp
@@ -27,18 +41,46 @@ set(GAME_HEADERS
     include/Game.h
 )
 
-# === Build shared game logic as a library ===
+# === GUI Sources ===
+set(GUI_SOURCES
+    GUI/main_gui.cpp
+    GUI/DatabaseManager.cpp
+    GUI/Game_gui.cpp
+    GUI/GameHistoryWindow.cpp
+    GUI/GameModeWindow.cpp
+    GUI/LoginWindow.cpp
+    GUI/MainMenuWindow.cpp
+    GUI/RegisterWindow.cpp
+    GUI/TicTacToe.cpp
+)
+
+# === GUI Headers ===
+set(GUI_HEADERS
+    include/DatabaseManager.h
+    include/Game_gui.h
+    include/GameHistoryWindow.h
+    include/GameModeWindow.h
+    include/LoginWindow.h
+    include/MainMenuWindow.h
+    include/RegisterWindow.h
+    include/TicTacToe.h
+)
+
+# === Create Game Library ===
 add_library(tictactoe_lib ${GAME_SOURCES} ${GAME_HEADERS})
 
-# === Main Game Executable ===
-add_executable(tictactoe Game_Logic/main.cpp)
-target_link_libraries(tictactoe tictactoe_lib)
+# === Main Executable ===
+add_executable(Tictactoe_Project ${GUI_SOURCES} ${GUI_HEADERS} ${UI_HEADERS})
+target_link_libraries(Tictactoe_Project
+    tictactoe_lib
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+)
 
-# === GoogleTest (submodule) ===
+# === GoogleTest ===
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
-
-# === Test Sources ===
 
 set(TEST_SOURCES
     tests/test_board.cpp
