@@ -16,8 +16,7 @@ include_directories(include)
 include_directories(GUI)
 
 # === Find Qt ===
-# Set Qt path (optional, prefer CLI)
-set(CMAKE_PREFIX_PATH "C:/Qt/6.9.1/msvc2022_64")
+set(Qt6_DIR "C:/Qt/6.9.1/msvc2022_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # === Game Logic Source Files ===
