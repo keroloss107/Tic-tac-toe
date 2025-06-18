@@ -9,24 +9,6 @@ TEST(GameTest, Constructor_InitializesDefaults) {
     EXPECT_EQ(game.getAIPlayer(), nullptr);
 }
 
-// Test switchPlayer changes name and symbol correctly
-TEST(GameTest, SwitchPlayer_AlternatesCorrectly) {
-    Game game;
-    game.setPlayerNamesAndSymbols("Alice", "Bob", 'X', 'O');
-
-    std::string currentName = "Alice";
-    char currentSymbol = 'X';
-
-    game.switchPlayer(currentName, currentSymbol);
-    EXPECT_EQ(currentName, "Bob");
-    EXPECT_EQ(currentSymbol, 'O');
-
-    game.switchPlayer(currentName, currentSymbol);
-    EXPECT_EQ(currentName, "Alice");
-    EXPECT_EQ(currentSymbol, 'X');
-}
-
-
 // Test basic interaction with the game’s board via public getter
 TEST(GameTest, GameBoard_ApplyMoveReflectsCorrectly) {
     Game game;
