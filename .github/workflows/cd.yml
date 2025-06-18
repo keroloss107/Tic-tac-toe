@@ -1,31 +1,34 @@
-name: CD - Build and Release Windows
+name: Windows CI + Auto CD
 
 on:
   push:
     branches: [main]
-    tags:
-      - 'v*'
+  pull_request:
 
 jobs:
-  release:
+  build-and-release:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v3
       with:
         submodules: true
 
-    - name: Install Qt via aqtinstall
+    - name: Install Qt using aqt
       run: |
         python -m pip install aqtinstall
         python -m aqt install-qt windows desktop 6.9.1 win64_msvc2022_64 -O ${{ github.workspace }}/Qt
 
-    - name: Configure
+    - name: Configure with CMake
       run: >
-        cmake -S . -B build
-        -G "Visual Studio 17 2022" -A x64
+        cmake -S . -B build -G "Visual Studio 17 2022" -A x64
         -DCMAKE_PREFIX_PATH="${{ github.workspace }}/Qt/6.9.1/msvc2022_64"
+
+    - name: Build Debug and Run Tests
+      run: |
+        cmake --build build --config Debug
+        build\Debug\board_tests.exe
 
     - name: Build Release
       run: cmake --build build --config Release
@@ -35,12 +38,32 @@ jobs:
         $env:Path += ";${{ github.workspace }}/Qt/6.9.1/msvc2022_64/bin"
         & "${{ github.workspace }}/Qt/6.9.1/msvc2022_64/bin/windeployqt.exe" --dir build\Release build\Release\tictactoe.exe
 
-    - name: Zip Release
-      run: powershell Compress-Archive -Path build\Release\* -DestinationPath tictactoe-release.zip
+    - name: Generate automatic version (v1.0.X)
+      id: generate_version
+      run: |
+        echo "Fetching latest release version..."
+        $releases = gh release list --limit 100 | Select-String "v1.0."
+        if ($releases.Count -eq 0) {
+          $version = "v1.0.1"
+        } else {
+          $last = ($releases | ForEach-Object { ($_ -split '\s+')[0] })[-1]
+          $next = [int]($last -replace 'v1\.0\.','') + 1
+          $version = "v1.0.$next"
+        }
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: pwsh
 
-    - name: Create GitHub Release
+    - name: Zip the release files
+      run: |
+        Compress-Archive -Path build\Release\* -DestinationPath tictactoe-release.zip
+
+    - name: Publish GitHub Release
       uses: softprops/action-gh-release@v1
       with:
+        name: Automatic Release ${{ steps.generate_version.outputs.version }}
+        tag_name: ${{ steps.generate_version.outputs.version }}
         files: tictactoe-release.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
