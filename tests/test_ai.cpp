@@ -82,6 +82,7 @@ TEST(AITest, HardMode_BlocksOpponentWin) {
     EXPECT_NE(board.evaluate(), -10);  // AI should block
 }
 
+
 TEST(AITest, HardMode_ChoosesValidMoveOnEmptyBoard) {
     Board board;
     AI ai('O', 'X', AI::HARD);
