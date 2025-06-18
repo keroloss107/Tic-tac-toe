@@ -4,67 +4,53 @@ on:
   push:
     branches:
       - main
+      - release
 
 jobs:
   release:
     runs-on: windows-latest
 
+    env:
+      QT_VERSION: 6.9.1
+      QT_DIR: C:\Qt\6.9.1\msvc2022_64
+      BUILD_TYPE: Release
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0   # Required to fetch all tags
+        submodules: true
 
-    - name: Get latest version tag and bump
-      id: get_version
+    - name: Set up Qt path
+      run: echo "$env:QT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+    - name: Auto-generate version
+      run: echo "VERSION=v1.0.${{ github.run_number }}" >> $env:GITHUB_ENV
+
+    - name: Configure CMake project
+      run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ env.QT_DIR }}" -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build with MSVC
+      run: cmake --build build --config $env:BUILD_TYPE
+
+    - name: Run windeployqt
       run: |
-        git fetch --tags
-        latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0")
-        echo "Latest tag: $latest_tag"
-
-        version=${latest_tag#v}
-        major=${version%%.*}
-        rest=${version#*.}
-        minor=${rest%%.*}
-
-        new_minor=$((minor + 1))
-        new_tag="v$major.$new_minor"
-        echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
-        echo "🔖 New tag will be: $new_tag"
-
-    - name: Configure project with CMake
-      run: cmake -S . -B build
-
-    - name: Build the game
-      run: cmake --build build --config Release
+        $qtDeploy = "${{ env.QT_DIR }}\bin\windeployqt.exe"
+        & $qtDeploy --release --dir build\Release build\Release\Tictactoe_Project.exe
 
     - name: Prepare release folder
       run: |
-        mkdir release
-        copy build\Release\tictactoe.exe release\tictactoe.exe
-        xcopy include release\include /E /I /Y
-        xcopy Game_Logic release\Game_Logic /E /I /Y
-        xcopy GUI release\GUI /E /I /Y
-        xcopy tests release\tests /E /I /Y
-        copy CMakeLists.txt release\CMakeLists.txt
-        echo Advanced Tic Tac Toe Project > release\README.txt
-        echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
+        mkdir packaged
+        Copy-Item build\Release\* -Recurse -Destination packaged
 
     - name: Create ZIP Archive
-      run: powershell Compress-Archive -Path release -DestinationPath tictactoe-release.zip
-
-    - name: Create Git Tag
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git tag ${{ steps.get_version.outputs.new_tag }}
-        git push origin ${{ steps.get_version.outputs.new_tag }}
+      run: Compress-Archive -Path packaged -DestinationPath tictactoe-release.zip
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        name: Release ${{ steps.get_version.outputs.new_tag }}
-        tag_name: ${{ steps.get_version.outputs.new_tag }}
+        name: Release ${{ env.VERSION }}
+        tag_name: ${{ env.VERSION }}
         files: tictactoe-release.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
