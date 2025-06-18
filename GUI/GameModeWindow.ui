@@ -7,35 +7,81 @@
 				<x>0</x>
 				<y>0</y>
 				<width>400</width>
-				<height>300</height>
+				<height>350</height>
 			</rect>
+		</property>
+		<property name="styleSheet">
+			<string notr="true">
+				QWidget {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #14213d, stop:1 #000000);
+				color: white;
+				font-family: 'Segoe UI';
+				font-size: 14px;
+				}
+				QLabel {
+				color: #00d4ff;
+				font-size: 18px;
+				font-weight: bold;
+				text-shadow: 1px 1px #000;
+				}
+				QRadioButton {
+				color: #f72585;
+				font-size: 16px;
+				padding: 4px;
+				spacing: 6px;
+				}
+				QComboBox {
+				background-color: #1f4068;
+				color: #ffffff;
+				border: 1px solid #00d4ff;
+				padding: 5px;
+				border-radius: 4px;
+				font-weight: bold;
+				}
+				QPushButton {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #ff4d6d, stop:1 #f72585);
+				color: white;
+				border-radius: 10px;
+				padding: 10px;
+				font-weight: bold;
+				font-size: 16px;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				box-shadow: 2px 2px 6px #00000088;
+				}
+				QPushButton:hover {
+				background-color: #ff758f;
+				}
+			</string>
 		</property>
 		<layout class="QVBoxLayout" name="verticalLayout">
 			<item>
 				<widget class="QLabel" name="modeLabel">
 					<property name="text">
-						<string>Choose Game Mode</string>
+						<string>🎮 Choose Game Mode</string>
 					</property>
 				</widget>
 			</item>
 			<item>
 				<widget class="QRadioButton" name="pvpRadioButton">
 					<property name="text">
-						<string>Player vs Player</string>
+						<string>👥 Player vs Player</string>
 					</property>
 				</widget>
 			</item>
 			<item>
 				<widget class="QRadioButton" name="pvaiRadioButton">
 					<property name="text">
-						<string>Player vs AI</string>
+						<string>🤖 Player vs AI</string>
 					</property>
 				</widget>
 			</item>
 			<item>
 				<widget class="QLabel" name="difficultyLabel">
 					<property name="text">
-						<string>AI Difficulty:</string>
+						<string>🔥 AI Difficulty:</string>
 					</property>
 				</widget>
 			</item>
@@ -45,7 +91,7 @@
 			<item>
 				<widget class="QPushButton" name="startButton">
 					<property name="text">
-						<string>Start Game</string>
+						<string>🚀 Start Game</string>
 					</property>
 				</widget>
 			</item>

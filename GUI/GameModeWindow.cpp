@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
+extern QString username;
+
 GameModeWindow::GameModeWindow(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::GameModeWindow)
@@ -44,6 +46,8 @@ void GameModeWindow::on_startButton_clicked()
 
         if (ui->pvpRadioButton->isChecked()) {
             bool ok;
+			// Player vs Player
+            QString player1Name = username;
             QString player2Name = QInputDialog::getText(this, tr("Player 2 Name"),
                 tr("Enter Player 2 Name:"), QLineEdit::Normal,
                 "", &ok);
@@ -51,7 +55,7 @@ void GameModeWindow::on_startButton_clicked()
                 player2Name = "Player2";
             }
 
-            gameWindow->setupGame("Player1", player2Name.toStdString(), 'X', false);
+            gameWindow->setupGame(username.toStdString(), player2Name.toStdString(), 'X', false);
         }
 
     else if (ui->pvaiRadioButton->isChecked()) {
@@ -66,7 +70,7 @@ void GameModeWindow::on_startButton_clicked()
             difficulty = AI::HARD;
         }
 
-        gameWindow->setupGame("Player1", "Computer", 'X', true, difficulty);
+        gameWindow->setupGame(username.toStdString(), "Computer", 'X', true, difficulty);
     }
 
     gameWindow->show();
