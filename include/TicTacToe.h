@@ -4,7 +4,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
-#include "Game.h"
+#include "Game_gui.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TicTacToeWindow; }
