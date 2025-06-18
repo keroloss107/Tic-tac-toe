@@ -1,94 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
- <class>LoginWindow</class>
- <widget class="QWidget" name="LoginWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>400</width>
-    <height>300</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Login</string>
-  </property>
-  <widget class="QLabel" name="label_username">
-   <property name="text">
-    <string>Username:</string>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>80</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="usernameEdit">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>50</y>
-     <width>200</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_password">
-   <property name="text">
-    <string>Password:</string>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>100</y>
-     <width>80</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="passwordEdit">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>100</y>
-     <width>200</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Password</enum>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="loginButton">
-   <property name="text">
-    <string>Login</string>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>180</y>
-     <width>80</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="registerButton">
-   <property name="text">
-    <string>Register</string>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>180</y>
-     <width>80</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
- </widget>
- <resources/>
- <connections/>
+	<class>LoginWindow</class>
+	<widget class="QWidget" name="LoginWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>420</width>
+				<height>370</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Login</string>
+		</property>
+		<property name="styleSheet">
+			<string notr="true">
+				QWidget {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #14213d, stop:1 #000000);
+				color: white;
+				font-family: 'Segoe UI';
+				font-size: 14px;
+				}
+				QLabel {
+				color: #00d4ff;
+				font-size: 18px;
+				font-weight: bold;
+				text-shadow: 1px 1px #000;
+				}
+				QLineEdit {
+				background-color: #1f4068;
+				color: white;
+				border: 1px solid #00d4ff;
+				padding: 6px;
+				border-radius: 4px;
+				font-weight: bold;
+				}
+				QPushButton {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #ff4d6d, stop:1 #f72585);
+				color: white;
+				border-radius: 10px;
+				padding: 10px;
+				font-weight: bold;
+				font-size: 16px;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				box-shadow: 2px 2px 6px #00000088;
+				}
+				QPushButton:hover {
+				background-color: #ff758f;
+				}
+			</string>
+		</property>
+		<widget class="QLabel" name="label_username">
+			<property name="text">
+				<string>👤 Username:</string>
+			</property>
+			<property name="geometry">
+				<rect>
+					<x>50</x>
+					<y>50</y>
+					<width>120</width>
+					<height>30</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QLineEdit" name="usernameEdit">
+			<property name="geometry">
+				<rect>
+					<x>180</x>
+					<y>50</y>
+					<width>170</width>
+					<height>30</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QLabel" name="label_password">
+			<property name="text">
+				<string>🔒 Password:</string>
+			</property>
+			<property name="geometry">
+				<rect>
+					<x>50</x>
+					<y>100</y>
+					<width>120</width>
+					<height>30</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QLineEdit" name="passwordEdit">
+			<property name="geometry">
+				<rect>
+					<x>180</x>
+					<y>100</y>
+					<width>170</width>
+					<height>30</height>
+				</rect>
+			</property>
+			<property name="echoMode">
+				<enum>QLineEdit::Password</enum>
+			</property>
+		</widget>
+		<widget class="QPushButton" name="loginButton">
+			<property name="text">
+				<string>🔓 Login</string>
+			</property>
+			<property name="geometry">
+				<rect>
+					<x>70</x>
+					<y>200</y>
+					<width>120</width>
+					<height>40</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QPushButton" name="registerButton">
+			<property name="text">
+				<string>📝 Register</string>
+			</property>
+			<property name="geometry">
+				<rect>
+					<x>230</x>
+					<y>200</y>
+					<width>120</width>
+					<height>40</height>
+				</rect>
+			</property>
+		</widget>
+	</widget>
+	<resources/>
+	<connections/>
 </ui>
