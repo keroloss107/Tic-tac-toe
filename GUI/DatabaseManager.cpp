@@ -6,6 +6,8 @@
 #include <QSqlQuery>
 #include <QStandardPaths>
 #include <QDir>
+#include <QElapsedTimer>  
+
 
 DatabaseManager::DatabaseManager()
 {
@@ -111,6 +113,8 @@ bool DatabaseManager::loginUser(const QString& username, const QString& password
 
 void DatabaseManager::saveGameResult(const QString& player, const QString& opponent, const QString& result)
 {
+    QElapsedTimer timer;
+    timer.start();  // Start measuring
     if (!connect()) {
         qWarning() << "[DatabaseManager] Can't save game result because database isn't open.";
         return;
@@ -129,11 +133,16 @@ void DatabaseManager::saveGameResult(const QString& player, const QString& oppon
     else {
         qDebug() << "[DatabaseManager] Game result saved for player:" << player << "vs" << opponent;
     }
+    qDebug() << "[PERF] DB save took:" << timer.elapsed() << "ms";  // Log it
+
 }
 
 
 QList<QVariantMap> DatabaseManager::getGameHistory(const QString& player)
 {
+    QElapsedTimer timer;
+    timer.start();
+
     QList<QVariantMap> historyList;
 
     if (!connect()) {
@@ -158,6 +167,7 @@ QList<QVariantMap> DatabaseManager::getGameHistory(const QString& player)
     else {
         qWarning() << "[DatabaseManager] Failed to get history:" << query.lastError().text();
     }
+    qDebug() << "[PERF] History load took:" << timer.elapsed() << "ms";
 
     return historyList;
 }
