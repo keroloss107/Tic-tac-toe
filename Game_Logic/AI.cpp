@@ -61,7 +61,7 @@ pair<int, int> AI::getMediumMove(Board& board) {
     }
 
     // 3. Otherwise, use shallow minimax with heuristic
-    return findBestMoveLimited(board, 1);
+    return findBestMoveLimited(board, 2);
 }
 
 // Shallow minimax with depth limit
