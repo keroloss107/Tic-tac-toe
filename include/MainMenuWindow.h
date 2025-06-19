@@ -22,7 +22,7 @@ signals:
 private slots:
     void on_startGameButton_clicked();
     void on_logoutButton_clicked();
-    void on_historyButton_clicked(); // (optional)
+    void on_historyButton_clicked(); 
 
 private:
     Ui::MainMenuWindow* ui;

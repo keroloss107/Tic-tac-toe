@@ -2,6 +2,7 @@
 #include "ui_MainMenuWindow.h"
 #include "GameModeWindow.h"
 #include "GameHistoryWindow.h"
+#include "LoginWindow.h"
 
 MainMenuWindow::MainMenuWindow(QString username, QWidget* parent) :
     QWidget(parent),
@@ -23,12 +24,13 @@ void MainMenuWindow::on_startGameButton_clicked()
 { 
     GameModeWindow* gamemode = new GameModeWindow();
     gamemode->show();
-    emit startGameRequested(); // We signal that the user wants to start a game
 }
 
 void MainMenuWindow::on_logoutButton_clicked()
 {
     emit logoutRequested(); // Signal that the user wants to logout
+	LoginWindow* loginWindow = new LoginWindow();
+	loginWindow->show(); // Show the login window
 	this->close(); // Close the main menu window
 }
 
