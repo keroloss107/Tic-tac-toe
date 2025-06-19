@@ -45,7 +45,22 @@ pair<int, int> AI::getRandomMove(Board& board) {
 // MEDIUM: shallow Minimax with Depth Limit 1
 // ===================================
 pair<int, int> AI::getMediumMove(Board& board) {
-        return findBestMoveLimited(board, 1);
+    // 1. Take winning move if available
+    for (auto move : board.getAvailableMoves()) {
+        Board temp = board;
+        temp.makeMove(move.first, move.second, aiMark_);
+        if (temp.evaluate() == 10) return move;
+    }
+
+    // 2. Block opponent's win
+    for (auto move : board.getAvailableMoves()) {
+        Board temp = board;
+        temp.makeMove(move.first, move.second, humanMark_);
+        if (temp.evaluate() == -10) return move;
+    }
+
+    // 3. Otherwise, use shallow minimax with heuristic
+    return findBestMoveLimited(board, 1);
 }
 
 // Shallow minimax with depth limit
