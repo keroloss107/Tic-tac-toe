@@ -42,6 +42,10 @@ void GameModeWindow::on_pvaiRadioButton_toggled(bool checked)
 
 void GameModeWindow::on_startButton_clicked()
 {
+	if (!ui->pvpRadioButton->isChecked() && !ui->pvaiRadioButton->isChecked()) {
+		QMessageBox::warning(this, tr("Warning"), tr("Please select a game mode."));
+		return;
+	}
     TicTacToeWindow* gameWindow = new TicTacToeWindow();
 
         if (ui->pvpRadioButton->isChecked()) {
