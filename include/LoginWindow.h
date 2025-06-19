@@ -22,7 +22,6 @@ private slots:
 
 private:
     Ui::LoginWindow* ui;
-    void tryLogin(const QString& username, const QString& password);
 };
 
 #endif // LOGINWINDOW_H
