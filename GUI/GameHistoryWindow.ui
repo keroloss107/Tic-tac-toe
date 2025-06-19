@@ -1,44 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
- <class>GameHistoryWindow</class>
- <widget class="QWidget" name="GameHistoryWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>400</width>
-    <height>300</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Game History</string>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="historyLabel">
-     <property name="text">
-      <string>Game History</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignHCenter</set>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font-weight: bold; font-size: 18px;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QListWidget" name="historyListWidget"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="backButton">
-     <property name="text">
-      <string>Back to Menu</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
- </widget>
- <resources/>
- <connections/>
+	<class>GameHistoryWindow</class>
+	<widget class="QWidget" name="GameHistoryWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>400</width>
+				<height>350</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Game History</string>
+		</property>
+		<property name="styleSheet">
+			<string notr="true">
+				QWidget {
+				background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+				stop:0 #14213d, stop:1 #000000);
+				color: white;
+				font-family: 'Segoe UI';
+				}
+				QLabel {
+				color: #00d4ff;
+				font-size: 20px;
+				font-weight: bold;
+				text-align: center;
+				}
+				QListWidget {
+				background-color: #1f4068;
+				color: white;
+				border: 1px solid #00d4ff;
+				border-radius: 8px;
+				padding: 6px;
+				}
+				QPushButton {
+				background-color: #1f4068;
+				color: white;
+				border: 2px solid #00d4ff;
+				font-weight: bold;
+				border-radius: 12px;
+				padding: 6px;
+				}
+				QPushButton:hover {
+				background-color: #ff4d6d;
+				border-color: #f72585;
+				}
+			</string>
+		</property>
+		<layout class="QVBoxLayout" name="verticalLayout">
+			<item>
+				<widget class="QLabel" name="historyLabel">
+					<property name="text">
+						<string>📜 Game History</string>
+					</property>
+					<property name="alignment">
+						<set>Qt::AlignHCenter</set>
+					</property>
+				</widget>
+			</item>
+			<item>
+				<widget class="QListWidget" name="historyListWidget"/>
+			</item>
+			<item>
+				<widget class="QPushButton" name="backButton">
+					<property name="text">
+						<string>Back to Menu</string>
+					</property>
+				</widget>
+			</item>
+		</layout>
+	</widget>
+	<resources/>
+	<connections/>
 </ui>

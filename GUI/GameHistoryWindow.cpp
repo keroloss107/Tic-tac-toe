@@ -63,5 +63,5 @@ void GameHistoryWindow::loadHistory(const QString& player)
 
 void GameHistoryWindow::handleBackClicked()
 {
-    emit backToMenu();
+	this->close(); 
 }
