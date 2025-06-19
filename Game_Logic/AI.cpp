@@ -6,7 +6,6 @@
 #include <vector>
 using namespace std;
 
-
 // Constructor
 AI::AI(char aiMark, char humanMark, Difficulty level)
     : aiMark_(aiMark), humanMark_(humanMark), difficulty_(level) {
