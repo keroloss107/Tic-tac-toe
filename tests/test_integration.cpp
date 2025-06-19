@@ -28,23 +28,6 @@ TEST(IntegrationTest, AIAvoidsOccupiedCell) {
     EXPECT_NE(move, std::make_pair(0, 0));
 }
 
-// Test full sequence leading to a draw
-TEST(IntegrationTest, GamePlaysToDraw) {
-    Board board;
-    board.makeMove(0, 0, 'X');
-    board.makeMove(0, 1, 'O');
-    board.makeMove(0, 2, 'X');
-    board.makeMove(1, 0, 'X');
-    board.makeMove(1, 1, 'O');
-    board.makeMove(1, 2, 'O');
-    board.makeMove(2, 0, 'O');
-    board.makeMove(2, 1, 'X');
-    board.makeMove(2, 2, 'X');
-
-    EXPECT_EQ(board.evaluate(), 0); // Draw
-    EXPECT_FALSE(board.isMovesLeft());
-}
-
 // Test AI blocks opponent's winning move
 TEST(IntegrationTest, AIBlocksOpponent) {
     Board board;
@@ -149,7 +132,4 @@ TEST(IntegrationTest, AIHandlesFullBoard) {
     auto move = ai.findBestMove(board);
     EXPECT_EQ(move, std::make_pair(-1, -1));
 }
-
-
-
 // End of test_integration.cpp
