@@ -1,4 +1,4 @@
-#include "TicTacToe.h"
+﻿#include "TicTacToe.h"
 #include "ui_TicTacToe.h"
 #include <QMessageBox>
 #include "GameModeWindow.h"
@@ -42,10 +42,17 @@ void TicTacToeWindow::setupGame(std::string player1Name, std::string player2Name
     currentPlayerSymbol_ = player1Symbol;
     vsAI_ = vsAI;
     updateBoard();
+	updateStatusLabel();
 }
 
 void TicTacToeWindow::handleButtonClick()
 {
+    QElapsedTimer clickTimer;
+    clickTimer.start();
+
+    // ... original button click logic here ...
+
+
     if (gameOver_) return;
 
     QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
@@ -63,13 +70,19 @@ void TicTacToeWindow::handleButtonClick()
     checkGameOver();
 
     switchPlayer();
+    updateStatusLabel();
+
 
     if (vsAI_ && currentPlayerName_ == "Computer" && !gameOver_) {
         aiMove();
         updateBoard();
         checkGameOver();
         switchPlayer();
+        updateStatusLabel();
+
     }
+    qDebug() << "[PERF] Button click processed in" << clickTimer.elapsed() << "ms";
+
 }
 
 void TicTacToeWindow::updateBoard()
@@ -181,12 +194,21 @@ void TicTacToeWindow::switchPlayer()
     }
 }
 
+
 void TicTacToeWindow::aiMove()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::pair<int, int> bestMove = game_.getAI()->findBestMove(game_.getBoard());
+
     if (bestMove.first != -1 && bestMove.second != -1) {
         game_.getBoard().makeMove(bestMove.first, bestMove.second, currentPlayerSymbol_);
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+    qDebug() << "[PERF] AI move took:" << duration.count() << "μs";
 }
 
 void TicTacToeWindow::disableAllButtons()
