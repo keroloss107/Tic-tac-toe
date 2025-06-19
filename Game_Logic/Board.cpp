@@ -10,7 +10,7 @@ Board::Board() {
             grid[i][j] = ' ';  // Initialize all cells to empty spaces
 }
 // Check if there are any moves left on the board
-bool Board::isMovesLeft() const{
+bool Board::isMovesLeft() const {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             if (grid[i][j] == ' ') { // Check if the cell is empty
