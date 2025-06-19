@@ -1,10 +1,7 @@
 #include "RegisterWindow.h"
 #include "ui_RegisterWindow.h"
 #include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QCryptographicHash>
-#include <QString>
+#include "DatabaseManager.h"
 
 RegisterWindow::RegisterWindow(QWidget* parent)
     : QWidget(parent)
@@ -35,21 +32,11 @@ void RegisterWindow::on_registerButton_clicked()
         return;
     }
 
-    saveUserCredentials(username, password);
-    QMessageBox::information(this, "Success", "Account created successfully!");
-    this->close(); // Close window after successful registration
-}
-
-void RegisterWindow::saveUserCredentials(const QString& username, const QString& password)
-{
-    QFile file("users.txt");
-    if (file.open(QIODevice::Append | QIODevice::Text)) {
-        QTextStream out(&file);
-        QByteArray hashedPassword = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256).toHex();
-        out << username << " " << hashedPassword << "\n";
-        file.close();
+    if (DatabaseManager::instance().registerUser(username, password)) {
+        QMessageBox::information(this, "Success", "Account created successfully!");
+        this->close();
     }
     else {
-        QMessageBox::critical(this, "Error", "Could not open users file.");
+        QMessageBox::critical(this, "Error", "Registration failed. Username might already exist.");
     }
 }

@@ -20,8 +20,7 @@ private slots:
 
 private:
     Ui::RegisterWindow* ui;
-    void saveUserCredentials(const QString& username, const QString& password);
 };
 
-#endif // REGISTERWINDOW_H
+#endif 
 #pragma once
