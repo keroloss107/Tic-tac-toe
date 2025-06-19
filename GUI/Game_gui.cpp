@@ -40,6 +40,4 @@ void Game::switchPlayer(std::string& currentPlayerName, char& currentPlayerSymbo
     }
 }
 
-// Old play() is NOT used anymore in GUI
-// You don't need console play() for GUI
-// You manage moves inside TicTacToeWindow instead
+
