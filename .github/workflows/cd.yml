@@ -113,21 +113,13 @@ jobs:
       run: |
 
         mkdir release
-
-        copy build\Release\tictactoe.exe release\tictactoe.exe
-
         xcopy include release\include /E /I /Y
-
         xcopy Game_Logic release\Game_Logic /E /I /Y
-
         xcopy GUI release\GUI /E /I /Y
-
         xcopy tests release\tests /E /I /Y
-
+        xcopy Game release\Game /E /I /Y
         copy CMakeLists.txt release\CMakeLists.txt
-
         echo Advanced Tic Tac Toe Project > release\README.txt
-
         echo Includes: AI, Game Logic, GUI, and Tests >> release\README.txt
 
 
